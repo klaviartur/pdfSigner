@@ -10,6 +10,7 @@ import platform
 import locale
 import subprocess
 import copy
+import time
 
 class CustomToolBar(QToolBar):
     def contextMenuEvent(self, event):
@@ -219,6 +220,8 @@ class ManageSignaturesDialog(QDialog):
             else:
                 raise NotImplementedError('Betriebssystem nicht unterstützt' if self.language == 'de' else 'Unsupported operating system')
 
+            os.makedirs(os.path.dirname(signatures_list_file), exist_ok=True)
+
             with open(signatures_list_file, 'w') as file:
                 for index in range(self.table.rowCount() - 1):
                     file.write(f"{self.get_signature_path(index)}\n")
@@ -300,6 +303,7 @@ class PDFSigner(QMainWindow):
         self.signature_activated = False
         self.doc = None  # Store the loaded PDF document
         self.isSaved = True
+        self.last_page_action_time = time.time()
 
         self.settings_info = self.load_settings_info()
         self.settings = self.load_settings()
@@ -550,10 +554,16 @@ class PDFSigner(QMainWindow):
         if event.angleDelta().y() != 0:
             #print('zooming…')
             self.zoomAroundCursor(event.angleDelta().y(), cursor_pos)
-        if event.angleDelta().x() < -100 and self.scroll_area.horizontalScrollBar().value() == self.scroll_area.horizontalScrollBar().maximum():
-            self.next_page_action.trigger()
-        elif event.angleDelta().x() > 100 and self.scroll_area.horizontalScrollBar().value() == 0:
-            self.prev_page_action.trigger()
+        if event.angleDelta().x() < -300 and self.scroll_area.horizontalScrollBar().value() == self.scroll_area.horizontalScrollBar().maximum():
+            current_time = time.time() * 1000
+            if current_time - self.last_page_action_time >= 250:
+                self.next_page_action.trigger()
+                self.last_page_action_time = current_time
+        elif event.angleDelta().x() > 300 and self.scroll_area.horizontalScrollBar().value() == 0:
+            current_time = time.time() * 1000
+            if current_time - self.last_page_action_time >= 250:
+                self.prev_page_action.trigger()
+                self.last_page_action_time = current_time
         elif event.angleDelta().x() != 0:
             self.scroll_area.horizontalScrollBar().setValue(self.scroll_area.horizontalScrollBar().value() - event.angleDelta().x())
 
