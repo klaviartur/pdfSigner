@@ -7,10 +7,9 @@ It allowes users to open PDF files, sign them with custom signatures, and save t
 
 ## Features
 
-- Open PDF files and navigate through pages.
-- Quickly zoom to the disired point on the page.
+- Quickly zoom to the disired area on the page.
 - Add one or more signatures.
-- Save the signed PDFs as a PDF, containing only one image object.
+- Save the signed PDFs as a PDF that consists of only one image object.
 - Manage multiple custom signatures.
 
 ## Getting Started
@@ -20,6 +19,7 @@ It allowes users to open PDF files, sign them with custom signatures, and save t
 - Python 3.x
 - PyQt5 library
 - PyMuPDF (MuPDF) library
+- at least one signature image (.png), ideally with transparent background
 
 ### Installation
 
