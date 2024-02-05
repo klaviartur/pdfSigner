@@ -2,8 +2,8 @@
 import sys
 import os
 import random
-from PyQt5.QtWidgets import QApplication, QMainWindow, QHBoxLayout, QVBoxLayout, QLabel, QPushButton, QToolButton, QFileDialog, QScrollArea, QWidget, QSizePolicy, QMessageBox, QComboBox, QToolBar, QAction, QDialog, QCheckBox, QTableWidget, QTableWidgetItem, QStyle, QStyleOptionComboBox, QProxyStyle
-from PyQt5.QtGui import QPixmap, QImage, QImageReader, QPainter, QCursor, QIcon, QTransform
+from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QLabel, QPushButton, QToolButton, QFileDialog, QScrollArea, QWidget, QSizePolicy, QMessageBox, QComboBox, QToolBar, QAction, QDialog, QCheckBox, QTableWidget, QTableWidgetItem, QStyle
+from PyQt5.QtGui import QPixmap, QImage, QImageReader, QPainter, QCursor, QIcon
 from PyQt5.QtCore import Qt, QByteArray, QBuffer, QRectF, QSize, pyqtSignal
 import fitz
 import platform
