@@ -527,7 +527,7 @@ class PDFSigner(QMainWindow):
 
             self.update_pdf_display()
             self.update_page_buttons()
-            self.isSaved = False
+            #self.isSaved = False
 
     def update_pdf_display(self):
         if not self.doc:
