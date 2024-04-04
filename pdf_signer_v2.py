@@ -540,10 +540,12 @@ class PDFSigner(QMainWindow):
     def resizeEvent(self, event):
         if hasattr(self, 'scroll_area'):
             self.update_pdf_display()
+            self.draw_signature_cursor()
 
     def enter_pdf_label(self):
         if self.signature_activated:
             self.setCursor(self.signature_cursor)
+            self.draw_signature_cursor()
 
     def leave_pdf_label(self):
         if self.signature_activated:
@@ -748,7 +750,7 @@ class PDFSigner(QMainWindow):
     def draw_signature_cursor(self):
         if self.signature_activated:
             _, signature_pixmap, _, signature_scale_factor = self.signatures[self.current_signature_index]
-            scale_factor = signature_scale_factor * self.signature_zoom_factor * self.display_zoom_factor
+            scale_factor = signature_scale_factor * self.signature_zoom_factor * self.display_zoom_factor * self.pdf_scale_factor
             self.signature_cursor = QCursor(signature_pixmap.scaled(
                                         int(signature_pixmap.width() * scale_factor),
                                         int(signature_pixmap.height() * scale_factor),
@@ -967,11 +969,11 @@ class PDFSigner(QMainWindow):
         painter = QPainter(pdf_pixmap)
         painter.setRenderHint(QPainter.Antialiasing)
         for sig in signatures:
-            index = sig[0]
+            sig_idx = sig[0]
             painter.drawPixmap(int(sig[2] * scale_factor * zoom),
                                 int(sig[3] * scale_factor * zoom),
-                                self.signatures[index][1].scaled(int(self.signatures[index][1].width() * self.signatures[index][3] * sig[1] * zoom),
-                                                            int(self.signatures[index][1].height() * self.signatures[index][3] * sig[1] * zoom),
+                                self.signatures[sig_idx][1].scaled(int(self.signatures[sig_idx][1].width() * self.signatures[sig_idx][3] * sig[1] * zoom * scale_factor),
+                                                            int(self.signatures[sig_idx][1].height() * self.signatures[sig_idx][3] * sig[1] * zoom * scale_factor),
                                                             aspectRatioMode=Qt.KeepAspectRatio,
                                                             transformMode=Qt.SmoothTransformation))
         painter.end()
@@ -984,4 +986,3 @@ if __name__ == '__main__':
     pdf_path = sys.argv[1] if len(sys.argv) > 1 else None
     ex = PDFSigner(pdf_path)
     sys.exit(app.exec_())
-
